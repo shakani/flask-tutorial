@@ -6,11 +6,13 @@ Handlers for the app routes are written as Python functions called *view functio
 View functions are mapped to one or more route URLs so Flask knows what logic to execute when a client requests a given URL
 """
 
+
 # Home page route
-@app.route('/')
-@app.route('/index')
+@app.route("/")
+@app.route("/index")
 def index():
     return "Hello, World!"
+
 
 """
 Decorator pattern: use decorators to register functions as callbacks for certain events
