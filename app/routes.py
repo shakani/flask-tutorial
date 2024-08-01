@@ -5,9 +5,9 @@ View functions are mapped to one or more route URLs so Flask knows what logic to
 execute when a client requests a given URL
 """
 
-from app import app
+from flask import render_template
 
-user = {"username": "Miguel"}
+from app import app
 
 
 # Home page route
@@ -15,16 +15,8 @@ user = {"username": "Miguel"}
 @app.route("/index")
 def index() -> str:
     """Return index page."""
-    return f"""
-<html>
-    <head>
-        <title>Home Page - Microblog</title>
-    </head>
-    <body>
-        <h1>Hello {user["username"]}! </h1>
-    </body>
-</html>
-"""
+    user = {"username": "Miguel"}
+    return render_template("index.html", title="Home", user=user)
 
 
 """
