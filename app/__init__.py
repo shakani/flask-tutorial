@@ -1,10 +1,10 @@
-from flask import Flask
+from flask import Flask  # noqa: D104
 
 app = Flask(
-    __name__
+    __name__,
 )  # Passing __name__ to Flask almost always configures Flask in the correct way
 
-from app import routes  # noqa: E402
+from app import routes  # noqa: E402, F401
 
 """
 `routes` imported at bottom instead of at top
