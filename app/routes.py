@@ -5,7 +5,7 @@ View functions are mapped to one or more route URLs so Flask knows what logic to
 execute when a client requests a given URL
 """
 
-from flask import flash, redirect, render_template
+from flask import flash, redirect, render_template, url_for
 
 from app import app
 from app.forms import LoginForm
@@ -39,7 +39,7 @@ def login():
         flash(
             f"Login requested for user {form.username.data}, remember_me={form.remember_me.data}",
         )
-        return redirect("/index")
+        return redirect(url_for("index"))
     return render_template("login.html", title="Sign In", form=form)
 
 
