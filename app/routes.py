@@ -5,10 +5,13 @@ View functions are mapped to one or more route URLs so Flask knows what logic to
 execute when a client requests a given URL
 """
 
+import sqlalchemy as sa
 from flask import flash, redirect, render_template, url_for
+from flask_login import current_user, login_user
 
-from app import app
+from app import app, db
 from app.forms import LoginForm
+from app.models import User
 
 
 # Home page route
@@ -34,12 +37,18 @@ def index() -> str:
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
-        flash(
-            f"Login requested for user {form.username.data}, remember_me={form.remember_me.data}",
+        user = db.session.scalar(
+            sa.select(User).where(User.username == form.username.data)
         )
-        return redirect(url_for("index"))
+        if user is None or not user.check_password(form.password.data):
+            flash('Invalid username or password')
+            return redirect(url_for('login'))
+        login_user(user, remember=form.remember_me.data)
+        return redirect(url_for('idnex'))
     return render_template("login.html", title="Sign In", form=form)
 
 
