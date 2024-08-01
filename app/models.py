@@ -12,6 +12,7 @@ class User(db.Model):  # noqa: D101
     username: so.Mapped[str] = so.mapped_column(sa.String(64), index=True, unique=True)
     email: so.Mapped[str] = so.mapped_column(sa.String(120), index=True, unique=True)
     password_hash: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))  # noqa: FA100
+    posts: so.WriteOnlyMapped["Post"] = so.relationship(back_populates="author")
 
     def __repr__(self) -> str:  # noqa: D105
         return f"<User {self.username}>"
