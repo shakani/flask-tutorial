@@ -3,6 +3,7 @@ from typing import Optional
 
 import sqlalchemy as sa
 import sqlalchemy.orm as so
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from app import db
 
@@ -16,6 +17,14 @@ class User(db.Model):  # noqa: D101
 
     def __repr__(self) -> str:  # noqa: D105
         return f"<User {self.username}>"
+
+    def set_password(self, password: str) -> None:
+        """Set the password for the user."""
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password: str) -> bool:
+        """Check the password for the user."""
+        return check_password_hash(self.password_hash, password)
 
 
 class Post(db.Model):
