@@ -8,11 +8,13 @@ execute when a client requests a given URL
 from flask import render_template
 
 from app import app
+from app.forms import LoginForm
 
 
 # Home page route
 @app.route("/")
 @app.route("/index")
+@app.route("/login")
 def index() -> str:
     """Return index page."""
     user = {"username": "Miguel"}
@@ -29,6 +31,11 @@ def index() -> str:
     ]
 
     return render_template("index.html", title="Home", user=user, posts=posts)
+
+
+def login():
+    form = LoginForm()
+    return render_template("login.html", title="Sign In", form=form)
 
 
 """
