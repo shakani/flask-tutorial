@@ -6,7 +6,13 @@ import sqlalchemy.orm as so
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from app import db
+from app import db, login
+
+
+@login.user_loader
+def load_user(id: str):
+    """Load a user given the ID."""
+    return db.session.get(User, int(id))
 
 
 class User(UserMixin, db.Model):  # noqa: D101
