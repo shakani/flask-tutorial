@@ -22,8 +22,6 @@ from app.models import User
 @login_required
 def index() -> str:
     """Return index page."""
-    user = {"username": "Miguel"}
-
     posts = [
         {
             "author": {"username": "John"},
@@ -35,7 +33,7 @@ def index() -> str:
         },
     ]
 
-    return render_template("index.html", title="Home", user=user, posts=posts)
+    return render_template("index.html", title="Home", sposts=posts)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -59,7 +57,7 @@ def login() -> str:
 
 
 @app.route("/logout")
-def logout():
+def logout() -> str:
     logout_user()
     return redirect(url_for("/index"))
 
