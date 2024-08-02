@@ -59,7 +59,7 @@ def login() -> str:
 @app.route("/logout")
 def logout() -> str:
     logout_user()
-    return redirect(url_for("/index"))
+    return redirect(url_for("index"))
 
 
 """
