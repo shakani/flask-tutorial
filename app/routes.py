@@ -5,8 +5,10 @@ View functions are mapped to one or more route URLs so Flask knows what logic to
 execute when a client requests a given URL
 """
 
+from urllib.parse import urlsplit
+
 import sqlalchemy as sa
-from flask import flash, redirect, render_template, url_for
+from flask import flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 
 from app import app, db
@@ -49,13 +51,18 @@ def login() -> str:
             flash("Invalid username or password")
             return redirect(url_for("login"))
         login_user(user, remember=form.remember_me.data)
-        return redirect(url_for("index"))
+        next_page = request.args.get("next")
+        if not next_page or urlsplit(next_page).netloc != "":
+            next_page = url_for("index")
+        return redirect(next_page)
     return render_template("login.html", title="Sign In", form=form)
+
 
 @app.route("/logout")
 def logout():
     logout_user()
     return redirect(url_for("/index"))
+
 
 """
 Decorator pattern: use decorators to register functions as callbacks for certain events
