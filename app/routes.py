@@ -7,7 +7,7 @@ execute when a client requests a given URL
 
 import sqlalchemy as sa
 from flask import flash, redirect, render_template, url_for
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_required, login_user, logout_user
 
 from app import app, db
 from app.forms import LoginForm
@@ -17,6 +17,7 @@ from app.models import User
 # Home page route
 @app.route("/")
 @app.route("/index")
+@login_required
 def index() -> str:
     """Return index page."""
     user = {"username": "Miguel"}
@@ -36,7 +37,7 @@ def index() -> str:
 
 
 @app.route("/login", methods=["GET", "POST"])
-def login():
+def login() -> str:
     if current_user.is_authenticated:
         return redirect(url_for("index"))
     form = LoginForm()
